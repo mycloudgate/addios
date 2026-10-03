@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Carburantes Demo</title>
+<style>
+  :root { --g:#14532d; --g2:#dcfce7; --y:#fde047; --r:#dc2626; --t:#111827; --m:#4b5563; --line:#e5e7eb; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; color:var(--t); background:#f3f4f6; line-height:1.5; }
+  .wrap { max-width:720px; margin:0 auto; background:#fff; }
+  header { background:var(--g); color:#fff; padding:14px 16px; display:flex; align-items:center; justify-content:space-between; }
+  header b { font-size:20px; letter-spacing:.2px; }
+  header span { font-size:12px; background:rgba(255,255,255,.18); padding:3px 8px; border-radius:999px; }
+  main { padding:16px; }
+  h1 { font-size:24px; line-height:1.2; margin:8px 0 6px; }
+  h2 { font-size:19px; margin:26px 0 8px; }
+  p { margin:0 0 12px; }
+  .muted { color:var(--m); font-size:14px; }
+
+  /* Contenido de la web (nada de esto es publicidad) */
+  .head-banner { background:var(--g2); border:1px solid #86efac; border-radius:12px; padding:14px 16px; margin:4px 0 14px; }
+  .head-banner strong { display:block; font-size:16px; }
+  table { width:100%; border-collapse:collapse; font-size:15px; }
+  th, td { padding:10px 8px; text-align:left; border-bottom:1px solid var(--line); }
+  th { font-size:12px; text-transform:uppercase; letter-spacing:.4px; color:var(--m); }
+  td.price { font-weight:700; white-space:nowrap; }
+  #price-upload-slot { border:1px dashed #9ca3af; border-radius:12px; padding:14px 16px; margin-top:20px; }
+  #price-upload-slot input { width:100%; padding:10px; margin:8px 0; border:1px solid #d1d5db; border-radius:8px; font-size:15px; }
+  #price-upload-slot button { background:var(--g); color:#fff; border:0; padding:10px 16px; border-radius:8px; font-size:15px; }
+  footer { padding:18px 16px 24px; font-size:13px; color:var(--m); border-top:1px solid var(--line); }
+
+  /* Publicidad de mentira, exagerada a propósito */
+  .ad-label { font-size:10px; text-transform:uppercase; letter-spacing:.6px; color:#6b7280; display:block; margin-bottom:4px; }
+  .ad-btn { display:inline-block; background:var(--r); color:#fff; font-weight:800; padding:8px 14px; border-radius:6px; animation:pulse 1s infinite; }
+  @keyframes pulse { 50% { transform:scale(1.07); } }
+  .ad-banner-top { margin:0; padding:10px 12px; background:repeating-linear-gradient(45deg,#fef08a,#fef08a 14px,#fde047 14px,#fde047 28px); text-align:center; border-bottom:3px solid var(--r); }
+  .ad-banner-top h3 { margin:2px 0; font-size:22px; color:var(--r); text-transform:uppercase; }
+  .ad-banner-row td { padding:0; }
+  .ad-banner-row .box { margin:6px 0; padding:12px; background:#fff7ed; border:2px dashed #fb923c; text-align:center; }
+  #ad-slot-video { margin:18px 0; background:#111827; color:#fff; border-radius:8px; overflow:hidden; }
+  #ad-slot-video .screen { height:170px; display:flex; align-items:center; justify-content:center; flex-direction:column; font-weight:800; font-size:20px;
+     background:linear-gradient(110deg,#7c2d12,#ea580c,#facc15,#ea580c,#7c2d12); background-size:300% 100%; animation:move 2.5s linear infinite; }
+  @keyframes move { to { background-position:-300% 0; } }
+  #ad-slot-video .bar { height:5px; background:#374151; } #ad-slot-video .bar i { display:block; height:5px; width:35%; background:var(--r); animation:grow 6s linear infinite; }
+  @keyframes grow { to { width:100%; } }
+  #ad-slot-video .cap { padding:8px 12px; font-size:12px; color:#d1d5db; }
+  #ad-slot-inline { margin:16px 0; padding:14px; background:#ecfeff; border:2px solid #22d3ee; text-align:center; }
+  #ad-slot-inline b { font-size:19px; }
+  #ad-slot-cards { margin:20px 0; }
+  #ad-slot-cards .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px; }
+  #ad-slot-cards .card { border:1px solid #d1d5db; border-radius:10px; padding:12px; background:#fff; }
+  #ad-slot-cards .card .img { height:70px; border-radius:6px; margin-bottom:8px; background:linear-gradient(135deg,#a5b4fc,#f0abfc); }
+  #ad-slot-cards .card:nth-child(2) .img { background:linear-gradient(135deg,#fdba74,#fca5a5); }
+  #ad-slot-cards .card:nth-child(3) .img { background:linear-gradient(135deg,#86efac,#67e8f9); }
+  .ad-banner-sticky { position:fixed; left:0; right:0; bottom:0; z-index:50; background:#111827; color:#fff; text-align:center; padding:10px 12px; border-top:3px solid var(--y); }
+  .ad-banner-sticky b { color:var(--y); }
+  .ad-banner-spacer { height:70px; }
+  .popup { display:none; position:fixed; inset:0; z-index:9999; background:rgba(0,0,0,.72); align-items:center; justify-content:center; padding:20px; }
+  .popup.open { display:flex; }
+  .popup .dlg { position:relative; width:100%; max-width:380px; background:#fff; border-radius:14px; padding:26px 20px 20px; text-align:center; border:4px solid var(--y); }
+  .popup h3 { margin:0 0 8px; font-size:26px; color:var(--r); text-transform:uppercase; }
+  .popup .close { position:absolute; top:6px; right:8px; border:0; background:none; font-size:12px; color:#6b7280; padding:6px; }
+  .popup .close[disabled] { opacity:.6; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="ad-banner ad-banner-top" data-demo-ad>
+    <span class="ad-label" data-i18n="ad_label">Publicidad</span>
+    <h3 data-i18n="ad_tires_h">Neumáticos -50 %</h3>
+    <div class="ad-btn" data-i18n="ad_btn">¡Solo hoy!</div>
+  </div>
+
+  <header>
+    <b>Carburantes Demo</b>
+    <span data-i18n="site_tag">sitio de demostración</span>
+  </header>
+
+  <main>
+    <div class="head-banner">
+      <strong data-i18n="hero_title">Precios de carburantes hoy</strong>
+      <span data-i18n="hero_sub">Actualizado cada mañana. Todos los datos de esta página son ficticios.</span>
+    </div>
+
+    <h1 data-i18n="h1">Gasolineras más baratas cerca de ti</h1>
+    <p class="muted" data-i18n="intro">Compara los precios por litro y ahorra en cada repostaje.</p>
+
+    <table>
+      <thead><tr><th data-i18n="th_station">Estación</th><th data-i18n="th_g95">Gasolina 95</th><th data-i18n="th_diesel">Diésel</th></tr></thead>
+      <tbody>
+        <tr><td>Estación Los Pinos</td><td class="price">1,52 €</td><td class="price">1,41 €</td></tr>
+        <tr><td>Área El Mirador</td><td class="price">1,49 €</td><td class="price">1,39 €</td></tr>
+        <tr class="ad-banner ad-banner-row" data-demo-ad><td colspan="3"><div class="box"><span class="ad-label" data-i18n="ad_label">Publicidad</span><b data-i18n="ad_row">Lavado de coche gratis con tu repostaje</b></div></td></tr>
+        <tr><td>Gasolinera La Vega</td><td class="price">1,55 €</td><td class="price">1,44 €</td></tr>
+        <tr><td>Servicio del Puerto</td><td class="price">1,47 €</td><td class="price">1,38 €</td></tr>
+        <tr class="ad-banner ad-banner-row" data-demo-ad><td colspan="3"><div class="box"><span class="ad-label" data-i18n="ad_label">Publicidad</span><b data-i18n="ad_row2">Café + bollo por 1 € en tu área de servicio</b></div></td></tr>
+        <tr><td>Estación Valle Verde</td><td class="price">1,50 €</td><td class="price">1,40 €</td></tr>
+        <tr><td>Área Camino Real</td><td class="price">1,53 €</td><td class="price">1,43 €</td></tr>
+      </tbody>
+    </table>
+
+    <div id="ad-slot-video" data-demo-ad>
+      <div class="screen"><span data-i18n="ad_video">VÍDEO PUBLICITARIO</span><small data-i18n="ad_video_sub">se reproduce solo, con sonido</small></div>
+      <div class="bar"><i></i></div>
+      <div class="cap"><span data-i18n="ad_label">Publicidad</span> · <span data-i18n="ad_skip">Puedes saltarlo en 5 s</span></div>
+    </div>
+
+    <h2 data-i18n="tips_title">Cómo ahorrar combustible</h2>
+    <p data-i18n="tip1">Mantén la presión de los neumáticos en su valor recomendado: una presión baja aumenta el consumo.</p>
+    <div id="ad-slot-inline" data-demo-ad>
+      <span class="ad-label" data-i18n="ad_label">Publicidad</span>
+      <b data-i18n="ad_inline">Tu depósito lleno por solo 9 € al mes*</b><br>
+      <small data-i18n="ad_inline_sub">*Anuncio de demostración, no existe tal oferta</small>
+    </div>
+    <p data-i18n="tip2">Conduce con suavidad: acelerar y frenar de golpe gasta mucho más que mantener una velocidad constante.</p>
+    <p data-i18n="tip3">Retira del coche el peso que no necesites y evita llevar la baca vacía en el techo.</p>
+
+    <section id="ad-slot-cards" data-demo-ad>
+      <span class="ad-label" data-i18n="ad_sponsored">Contenido patrocinado</span>
+      <div class="grid">
+        <div class="card"><div class="img"></div><b data-i18n="card1">Seguro de coche: compáralo en 1 minuto</b></div>
+        <div class="card"><div class="img"></div><b data-i18n="card2">Los coches más baratos de mantener</b></div>
+        <div class="card"><div class="img"></div><b data-i18n="card3">Alquiler de furgonetas desde 1 € al día</b></div>
+      </div>
+    </section>
+
+    <div id="price-upload-slot">
+      <b data-i18n="send_title">¿Has visto un precio distinto?</b>
+      <p class="muted" data-i18n="send_text">Cuéntanoslo y lo revisamos (formulario de demostración, no envía nada).</p>
+      <input type="text" placeholder="Estación">
+      <input type="text" placeholder="€ / l">
+      <button type="button" data-i18n="send_btn">Enviar precio</button>
+    </div>
+  </main>
+
+  <footer data-i18n="footer">Página de demostración creada para mostrar cómo Addiós oculta la publicidad. Todos los datos y todos los anunciantes son ficticios.</footer>
+  <div class="ad-banner ad-banner-spacer" data-demo-ad></div>
+</div>
+
+<div class="ad-banner ad-banner-sticky" data-demo-ad>
+  <span class="ad-label" style="color:#9ca3af" data-i18n="ad_label">Publicidad</span>
+  <b data-i18n="ad_sticky">Descarga la app de ofertas: ¡-30 % en tu primera compra!</b>
+</div>
+
+<div id="ad-slot-popup" class="popup" data-demo-ad>
+  <div class="dlg">
+    <button class="close" type="button" disabled><span class="count">5</span></button>
+    <span class="ad-label" data-i18n="ad_label">Publicidad</span>
+    <h3 data-i18n="popup_title">¡Gana un depósito lleno!</h3>
+    <p data-i18n="popup_text">Suscríbete a nuestras ofertas y participa en el sorteo de esta semana.</p>
+    <div class="ad-btn" data-i18n="popup_btn">¡Quiero participar!</div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var dict = {
+    es: { ad_label:"Publicidad", ad_tires_h:"Neumáticos -50 %", ad_btn:"¡Solo hoy!", site_tag:"sitio de demostración",
+      hero_title:"Precios de carburantes hoy", hero_sub:"Actualizado cada mañana. Todos los datos de esta página son ficticios.",
+      h1:"Gasolineras más baratas cerca de ti", intro:"Compara los precios por litro y ahorra en cada repostaje.",
+      th_station:"Estación", th_g95:"Gasolina 95", th_diesel:"Diésel",
+      ad_row:"Lavado de coche gratis con tu repostaje", ad_row2:"Café + bollo por 1 € en tu área de servicio",
+      ad_video:"VÍDEO PUBLICITARIO", ad_video_sub:"se reproduce solo, con sonido", ad_skip:"Puedes saltarlo en 5 s",
+      tips_title:"Cómo ahorrar combustible",
+      tip1:"Mantén la presión de los neumáticos en su valor recomendado: una presión baja aumenta el consumo.",
+      tip2:"Conduce con suavidad: acelerar y frenar de golpe gasta mucho más que mantener una velocidad constante.",
+      tip3:"Retira del coche el peso que no necesites y evita llevar la baca vacía en el techo.",
+      ad_inline:"Tu depósito lleno por solo 9 € al mes*", ad_inline_sub:"*Anuncio de demostración, no existe tal oferta",
+      ad_sponsored:"Contenido patrocinado", card1:"Seguro de coche: compáralo en 1 minuto", card2:"Los coches más baratos de mantener", card3:"Alquiler de furgonetas desde 1 € al día",
+      send_title:"¿Has visto un precio distinto?", send_text:"Cuéntanoslo y lo revisamos (formulario de demostración, no envía nada).", send_btn:"Enviar precio",
+      footer:"Página de demostración creada para mostrar cómo Addiós oculta la publicidad. Todos los datos y todos los anunciantes son ficticios.",
+      ad_sticky:"Descarga la app de ofertas: ¡-30 % en tu primera compra!", popup_title:"¡Gana un depósito lleno!",
+      popup_text:"Suscríbete a nuestras ofertas y participa en el sorteo de esta semana.", popup_btn:"¡Quiero participar!" },
+    en: { ad_label:"Advertisement", ad_tires_h:"Tyres -50%", ad_btn:"Today only!", site_tag:"demo site",
+      hero_title:"Fuel prices today", hero_sub:"Updated every morning. All data on this page is fictional.",
+      h1:"Cheapest petrol stations near you", intro:"Compare prices per litre and save on every fill-up.",
+      th_station:"Station", th_g95:"Petrol 95", th_diesel:"Diesel",
+      ad_row:"Free car wash with your fill-up", ad_row2:"Coffee + pastry for €1 at your service area",
+      ad_video:"VIDEO ADVERTISEMENT", ad_video_sub:"plays by itself, with sound", ad_skip:"You can skip it in 5 s",
+      tips_title:"How to save fuel",
+      tip1:"Keep your tyres at the recommended pressure: low pressure raises consumption.",
+      tip2:"Drive smoothly: sudden acceleration and braking use far more than a steady speed.",
+      tip3:"Take out any weight you don't need and avoid driving with an empty roof rack.",
+      ad_inline:"Your tank full for just €9 a month*", ad_inline_sub:"*Demo advertisement, no such offer exists",
+      ad_sponsored:"Sponsored content", card1:"Car insurance: compare it in 1 minute", card2:"The cheapest cars to maintain", card3:"Van rental from €1 a day",
+      send_title:"Seen a different price?", send_text:"Tell us and we'll check it (demo form, it sends nothing).", send_btn:"Send price",
+      footer:"Demo page created to show how Addiós hides advertising. All data and all advertisers are fictional.",
+      ad_sticky:"Get the deals app: -30% on your first purchase!", popup_title:"Win a full tank!",
+      popup_text:"Subscribe to our offers and enter this week's draw.", popup_btn:"I want to enter!" }
+  };
+  var q = (new URLSearchParams(location.search).get('lang') || '').toLowerCase();
+  var lang = q === 'en' || q === 'es' ? q : ((navigator.language || 'es').toLowerCase().indexOf('en') === 0 ? 'en' : 'es');
+  document.documentElement.lang = lang;
+  var els = document.querySelectorAll('[data-i18n]');
+  for (var i = 0; i < els.length; i++) {
+    var v = dict[lang][els[i].getAttribute('data-i18n')];
+    if (v) els[i].textContent = v;
+  }
+  // Ventana emergente a pantalla completa, con cuenta atrás para poder cerrarla
+  setTimeout(function () {
+    var p = document.getElementById('ad-slot-popup');
+    if (!p) return;
+    p.classList.add('open');
+    var n = 5, c = p.querySelector('.count'), x = p.querySelector('.close');
+    var t = setInterval(function () {
+      n--;
+      if (n > 0) { c.textContent = n; return; }
+      clearInterval(t); x.disabled = false; x.textContent = '✕';
+      x.onclick = function () { p.classList.remove('open'); };
+    }, 1000);
+  }, 1500);
+})();
+</script>
+</body>
+</html>
