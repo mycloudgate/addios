@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Recetas Demo</title>
+<link rel="icon" type="image/png" href="/addios/demo/recetas/icon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/addios/demo/recetas/icon.png">
+<style>
+  :root { --c:#c2410c; --cl:#fb923c; --y:#fde047; --r:#dc2626; --t:#111827; --m:#4b5563; --line:#e5e7eb; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; color:var(--t); background:#f3f4f6; line-height:1.5; }
+  .wrap { max-width:720px; margin:0 auto; background:#fff; }
+  header { background:var(--c); color:#fff; padding:14px 16px; display:flex; align-items:center; justify-content:space-between; }
+  header b { font-size:20px; } header span { font-size:12px; background:rgba(255,255,255,.2); padding:3px 8px; border-radius:999px; }
+  main { padding:16px; } h1 { font-size:24px; line-height:1.2; margin:8px 0 6px; } p { margin:0 0 12px; } .muted { color:var(--m); font-size:14px; }
+  .head-banner { border:2px solid var(--cl); border-radius:12px; padding:14px 16px; margin:4px 0 14px; background:#f9fafb; }
+  .head-banner strong { display:block; font-size:16px; color:var(--c); }
+  article { padding:12px 0; border-bottom:1px solid var(--line); } article h2 { font-size:18px; margin:0 0 4px; }
+  #download-slot { border:1px dashed #9ca3af; border-radius:12px; padding:14px 16px; margin:18px 0 8px; }
+  footer { padding:18px 16px 24px; font-size:13px; color:var(--m); border-top:1px solid var(--line); }
+  .ad-label { font-size:10px; text-transform:uppercase; letter-spacing:.6px; color:#6b7280; display:block; margin-bottom:4px; }
+  .ad-btn { display:inline-block; background:var(--r); color:#fff; font-weight:800; padding:8px 14px; border-radius:6px; animation:pulse 1s infinite; }
+  @keyframes pulse { 50% { transform:scale(1.07); } }
+  .ad-banner-top { padding:10px 12px; background:repeating-linear-gradient(45deg,#fef08a,#fef08a 14px,#fde047 14px,#fde047 28px); text-align:center; border-bottom:3px solid var(--r); }
+  .ad-banner-top h3 { margin:2px 0; font-size:22px; color:var(--r); text-transform:uppercase; }
+  #ad-slot-inline { margin:16px 0; padding:14px; background:#ecfeff; border:2px solid #22d3ee; text-align:center; } #ad-slot-inline b { font-size:19px; }
+  #ad-slot-cards { margin:20px 0; } #ad-slot-cards .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px; }
+  #ad-slot-cards .card { border:1px solid #d1d5db; border-radius:10px; padding:12px; background:#fff; }
+  #ad-slot-cards .card .img { height:70px; border-radius:6px; margin-bottom:8px; background:linear-gradient(135deg,#fde68a,#fca5a5); }
+  #ad-slot-cards .card:nth-child(2) .img { background:linear-gradient(135deg,#a5f3fc,#c7d2fe); } #ad-slot-cards .card:nth-child(3) .img { background:linear-gradient(135deg,#bbf7d0,#fef08a); }
+  .ad-banner-sticky { position:fixed; left:0; right:0; bottom:0; z-index:50; background:#111827; color:#fff; text-align:center; padding:10px 12px; border-top:3px solid var(--y); }
+  .ad-banner-sticky b { color:var(--y); } .ad-banner-spacer { height:70px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="ad-banner ad-banner-top" data-demo-ad>
+    <span class="ad-label" data-i18n="label">Publicidad</span>
+    <h3 data-i18n="ad_top"></h3>
+    <div class="ad-btn" data-i18n="btn"></div>
+  </div>
+  <header><b>Recetas Demo</b><span data-i18n="tag"></span></header>
+  <main>
+    <div class="head-banner"><strong data-i18n="hero_t"></strong><span data-i18n="hero_s"></span></div>
+    <h1 data-i18n="h1"></h1>
+    <p class="muted" data-i18n="intro"></p>
+    <article><h2 data-i18n="a1_t"></h2><p data-i18n="a1_p"></p></article>
+    <div id="ad-slot-inline" data-demo-ad>
+      <span class="ad-label" data-i18n="label">Publicidad</span>
+      <b data-i18n="ad_inline"></b><br><small data-i18n="ad_inline_sub"></small>
+    </div>
+    <article><h2 data-i18n="a2_t"></h2><p data-i18n="a2_p"></p></article>
+    <article><h2 data-i18n="a3_t"></h2><p data-i18n="a3_p"></p></article>
+    <section id="ad-slot-cards" data-demo-ad>
+      <span class="ad-label" data-i18n="sponsored"></span>
+      <div class="grid">
+        <div class="card"><div class="img"></div><b data-i18n="c1"></b></div>
+        <div class="card"><div class="img"></div><b data-i18n="c2"></b></div>
+        <div class="card"><div class="img"></div><b data-i18n="c3"></b></div>
+      </div>
+    </section>
+    <div id="download-slot"><b data-i18n="dl_t"></b><p class="muted" data-i18n="dl_p"></p></div>
+  </main>
+  <footer data-i18n="footer"></footer>
+  <div class="ad-banner ad-banner-spacer" data-demo-ad></div>
+</div>
+<div class="ad-banner ad-banner-sticky" data-demo-ad>
+  <span class="ad-label" style="color:#9ca3af" data-i18n="label">Publicidad</span>
+  <b data-i18n="ad_sticky"></b>
+</div>
+<script>
+(function () {
+  var dict = {"es": {"tag": "sitio de demostración", "label": "Publicidad", "btn": "¡Solo hoy!", "sponsored": "Contenido patrocinado", "footer": "Página de demostración creada para mostrar cómo Addiós oculta la publicidad. Todos los datos y todos los anunciantes son ficticios.", "dl_t": "Descarga la guía en PDF", "dl_p": "Un archivo de ejemplo (demostración, no descarga nada).", "hero_t": "Recetas fáciles", "hero_s": "Todas las recetas de esta página son ficticias.", "h1": "Cocina rica en 30 minutos", "intro": "Ideas sencillas para el día a día.", "a1_t": "Tortilla de patatas jugosa", "a1_p": "Pocha las patatas a fuego lento y cuaja la tortilla por dentro para que quede tierna.", "a2_t": "Ensalada templada de garbanzos", "a2_p": "Mezcla garbanzos, pimiento asado y cebolla morada con un aliño de limón.", "a3_t": "Arroz con verduras de temporada", "a3_p": "Sofríe las verduras, añade el arroz y el caldo, y deja que repose cinco minutos.", "ad_top": "Sartenes antiadherentes -40 %", "ad_inline": "Tu menú semanal, planificado en un clic*", "ad_inline_sub": "*Anuncio de demostración, no existe tal servicio", "ad_sticky": "Descarga el recetario: ¡100 recetas gratis!", "c1": "Los utensilios que no pueden faltar", "c2": "Menús para toda la semana", "c3": "Cómo conservar mejor las sobras"}, "en": {"tag": "demo site", "label": "Advertisement", "btn": "Today only!", "sponsored": "Sponsored content", "footer": "Demo page created to show how Addiós hides advertising. All data and all advertisers are fictional.", "dl_t": "Download the PDF guide", "dl_p": "A sample file (demo only, it downloads nothing).", "hero_t": "Easy recipes", "hero_s": "All recipes on this page are fictional.", "h1": "Tasty cooking in 30 minutes", "intro": "Simple ideas for every day.", "a1_t": "Juicy potato omelette", "a1_p": "Slowly poach the potatoes and set the omelette just enough so the inside stays tender.", "a2_t": "Warm chickpea salad", "a2_p": "Mix chickpeas, roasted pepper and red onion with a lemon dressing.", "a3_t": "Rice with seasonal vegetables", "a3_p": "Fry the vegetables, add the rice and the stock, and let it rest for five minutes.", "ad_top": "Non-stick pans -40%", "ad_inline": "Your weekly menu, planned in one click*", "ad_inline_sub": "*Demo advertisement, no such service exists", "ad_sticky": "Get the recipe book: 100 free recipes!", "c1": "The utensils you can't do without", "c2": "Menus for the whole week", "c3": "How to store leftovers better"}};
+  var q = (new URLSearchParams(location.search).get('lang') || '').toLowerCase();
+  var lang = q === 'en' || q === 'es' ? q : ((navigator.language || 'es').toLowerCase().indexOf('en') === 0 ? 'en' : 'es');
+  document.documentElement.lang = lang;
+  var els = document.querySelectorAll('[data-i18n]');
+  for (var i = 0; i < els.length; i++) { var v = dict[lang][els[i].getAttribute('data-i18n')]; if (v) els[i].textContent = v; }
+})();
+</script>
+</body>
+</html>
